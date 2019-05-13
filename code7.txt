@@ -1,0 +1,45 @@
+I=imread('test4.bmp');
+I=ind2gray(I,map);
+subplot(2,2,1);
+imshow(I);
+title('原图');
+BW1=edge(I,'Sobel');
+subplot(2,2,3)
+imshow(BW1);title('sobel');
+BW2=edge(I,'Canny');
+subplot(2,2,4)
+imshow(BW2);title('canny');
+
+
+I=imread('test6.jpg');
+I=ind2gray(I,map);
+subplot(2,3,1);
+imshow(I);
+title('原图');
+BW1=edge(I,'Sobel');
+subplot(2,3,2)
+imshow(BW1);title('sobel');
+BW2=edge(I,'Canny');
+subplot(2,3,3)
+imshow(BW2);title('canny');
+
+
+[H, theta, rho]= hough(BW1,'RhoResolution', 0.5,'ThetaResolution',0.5);      
+    
+peak=houghpeaks(H,5); %求极值点   
+lines=houghlines(BW1,theta,rho,peak); %返回原图直线信息 
+subplot(235),imshow(BW1,[]),title('Hough Transform Detect Result'),hold on    
+for k=1:length(lines)    
+    xy=[lines(k).point1;lines(k).point2];    
+    plot(xy(:,1),xy(:,2),'LineWidth',4);    
+end    
+[H, theta, rho]= hough(BW2,'RhoResolution', 0.5,'ThetaResolution',0.5);      
+    
+peak=houghpeaks(H,5); %求极值点   
+lines=houghlines(BW2,theta,rho,peak); %返回原图直线信息 
+subplot(236),imshow(BW2,[]),title('Hough Transform Detect Result'),hold on    
+for k=1:length(lines)    
+    xy=[lines(k).point1;lines(k).point2];    
+    plot(xy(:,1),xy(:,2),'LineWidth',4);    
+end    
+
